@@ -1,0 +1,135 @@
+<nz-alert nzMessage="Your selected date: {{ selectedValue | date: 'yyyy-MM-dd' }}"></nz-alert>
+
+<div style="display: flex;" [ngStyle]="{ width: 'fit-content', border: '1px solid #d9d9d9', borderRadius: '4px' }">
+<nz-calendar [(ngModel)]="selectedValue" (nzSelectChange)="selectChange($event)">
+    <ul *nzDateCell="let date" class="events">
+        
+            <ng-container [ngSwitch]="date.getDate()">
+            
+                <li *ngFor="let item of listData">
+                    
+                    <div *ngIf="item.date.getMonth() === date.getMonth()">
+                   
+                        <ng-container *ngSwitchCase="item.date.getDate()">
+
+                           
+                            <div *ngIf="item.eventType === 'Task'">
+
+                                <button nz-icon nzType="check-circle" (click)="getCTrue()"></button> 
+                                <div *ngIf="click">
+                                    <nz-badge style="background-color:rgb(167, 168, 209);color: white; "   [nzStatus]="item.type" ><s>{{item.data}}</s></nz-badge>
+                                </div>
+
+                                <div *ngIf="!click" >
+                                    <nz-badge style="background-color:rgb(0, 4, 255) ;color: white;"   [nzStatus]="item.type" >{{item.data}}</nz-badge>
+                                </div>
+                                
+                            </div>
+                            
+                            
+                            <div *ngIf="item.eventType === 'Event'">
+                                <span  style="background-color: green;color: white;">{{item.data}}</span>
+                                <br>
+                                <span style="background-color: rgb(212, 48, 158); color: white;">{{helperFunction(item.startTime?.getHours())}}:{{helperFunction(item.startTime?.getMinutes())}}  ---  {{helperFunction(item.endTime?.getHours())}}:{{helperFunction(item.endTime?.getMinutes())}} o' clock</span>
+                            </div>
+
+                            <button nz-icon nzType="delete" (click)="deleteEvent(item)"></button>
+
+
+                        </ng-container>
+
+                    </div>
+
+                </li>
+            
+            </ng-container>
+    </ul>
+</nz-calendar>
+
+        
+        
+
+        <div style="margin-left: 20px;" *ngIf="flag">
+
+            <label style="margin-top: 5px;">Event Type: </label>
+        <select style="height: fit-content; " [(ngModel)]="GlobalEventType">
+            <option value="" disabled selected>Please Choose...</option>
+            <option value="Event">Event</option>
+            <option value="Task">Task</option>
+        </select>
+        <br>
+        <br>
+
+
+        <label>Add Content: </label>
+        <input [(ngModel)]="Data"  type="text" placeholder="Enter Event Content">
+        <br>
+        <br>
+
+        <label>Status Type: </label>
+        <select [(ngModel)]="Type" >
+            <option value="" disabled selected>Please Choose...</option>
+            <option value="warning">warning</option>
+            <option value="success">sucess</option>
+            <option value="error">error</option>
+        </select>
+
+        <div *ngIf= "GlobalEventType === 'Event'">
+        
+        
+        
+        <br>
+        <label>Start Date:</label>
+        <nz-date-picker style="height: fit-content; margin-left: 2px;" [(ngModel)]="rangeStartDate" (ngModelChange)="onChange($event)"></nz-date-picker>
+
+        <br>
+        <br>
+        <label>End Date:</label>
+        <nz-date-picker style="height: fit-content; margin-left: 2px;" [(ngModel)]="rangeEndDate" (ngModelChange)="onChange($event)"></nz-date-picker>
+
+        <br>
+        <br>
+        <label >Start Time:</label>
+        <nz-time-picker [(ngModel)]="rangeStartTime"></nz-time-picker>
+
+        <br>
+        <br>
+        <label >End Time:</label>
+        <nz-time-picker [(ngModel)]="rangeEndTime"></nz-time-picker>
+        
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div *ngIf= "GlobalEventType === 'Task'">
+            <button (click)="storeData(Data,Type,GlobalEventType)">Save Task</button>
+        </div>
+        
+        <div *ngIf= "GlobalEventType === 'Event'">
+            <button (click)="addEventtoMultipleDates(Data, Type, GlobalEventType, rangeStartTime, rangeEndTime)">Save Event</button>
+        </div>
+        
+
+        </div>
+
+    <br>
+    <br>
+    <button style="height: fit-content; margin-left: 20px; margin-right: 10px; margin-top: 5px;" [disabled]= "flag" (click)="getTrue()">Add Event</button>
+    <!-- <button style="height: fit-content; margin-left: 20px; margin-right: 10px;" nz-button nzType="primary" (click)="addEventtoMultipleDates(Data, Type)">Add Event to Multiple Dates</button> -->
+
+        
+        <!-- <br>
+        <br>
+        <label>From:</label>
+        <nz-datepicker [(ngModel)]="rangeStartDate" ngDefaultControl></nz-datepicker>
+
+        <nz-date-picker style="height: fit-content; margin-left: 20px; margin-right: 10px;" [(ngModel)]="rangeStartDate" (ngModelChange)="onChange($event)"></nz-date-picker>
+        <br>
+        <br>
+     
+        <label>To:</label>
+        <nz-date-picker style="height: fit-content; margin-left: 20px; margin-right: 10px;" [(ngModel)]="rangeEndDate" (ngModelChange)="onChange($event)"></nz-date-picker> -->
+
+</div>
