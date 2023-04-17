@@ -76,10 +76,6 @@ export class CalendarCComponent {
   }
 
   addEventtoMultipleDates(Data: any, Type: any, EType:any,st:any,et:any) {
-    // const datesInRange = this.getDatesInRange(this.rangeStartDate, this.rangeEndDate);
-    // for (let i = 0; i < datesInRange.length; i++) {
-    //   this.listData.push({ date: datesInRange[i], data: Data, type: Type, eventType:EType, startTime:st, endTime:et });
-    // }
     let listObj : {date:Date[], data:string,
       type:string,
       eventType:string,
