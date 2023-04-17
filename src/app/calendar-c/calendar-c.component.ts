@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzCalendarMode } from 'ng-zorro-antd/calendar';
 import { from } from 'rxjs';
@@ -21,14 +21,14 @@ export class CalendarCComponent {
 
 
   listData : {
-    date:Date,
+    date:Date[],
     data:string,
     type:string,
     eventType:string,
     startTime?:Date,
     endTime?:Date,
-    allDay?:boolean
-  }[]=[{date:new Date('2023-09-30'),data:"My Birthday",type:"success",eventType:'Event',}];
+    isCompleted?:boolean
+  }[]=[{date:[new Date('2023-09-30')],data:"My Birthday",type:"success",eventType:'Event',}];
   
   selectedValue = new Date();
   rangeStartDate: Date = new Date();
@@ -53,25 +53,18 @@ export class CalendarCComponent {
   {
     this.flag=true;
   }
-  getCTrue(){
-    this.click=true;
-  }
-  getCFalse(){
-    this.click=false;
+  getCTrue(item:any){
     
+      item.isCompleted = true;
   }
-  ngOnChanges(){
-    this.click=false;
-
-  }
-
+  
   storeData(Data : any, Type:any, EType:any){
 
-    this.listData.push({date:new Date(this.selectedValue),data:Data,type:Type,eventType:EType});
+    this.listData.push({date:[new Date(this.selectedValue)],data:Data,type:Type,eventType:EType});
 
     // this.listData[0].data;
     console.log(this.listData);
-    console.log('Get Date',this.listData[0].date.getDate());
+    console.log('Get Date',this.listData[0].date[0].getDate());
     this.flag=false;
   }
 
@@ -83,10 +76,28 @@ export class CalendarCComponent {
   }
 
   addEventtoMultipleDates(Data: any, Type: any, EType:any,st:any,et:any) {
-    const datesInRange = this.getDatesInRange(this.rangeStartDate, this.rangeEndDate);
-    for (let i = 0; i < datesInRange.length; i++) {
-      this.listData.push({ date: datesInRange[i], data: Data, type: Type, eventType:EType, startTime:st, endTime:et });
+    // const datesInRange = this.getDatesInRange(this.rangeStartDate, this.rangeEndDate);
+    // for (let i = 0; i < datesInRange.length; i++) {
+    //   this.listData.push({ date: datesInRange[i], data: Data, type: Type, eventType:EType, startTime:st, endTime:et });
+    // }
+    let listObj : {date:Date[], data:string,
+      type:string,
+      eventType:string,
+      startTime?:Date,
+      endTime?:Date,
+      isCompleted?:boolean} = {
+      date:[], data: Data, type: Type, eventType:EType, startTime:st, endTime:et
     }
+    // push dates 
+    const datesInRange = this.getDatesInRange(this.rangeStartDate, this.rangeEndDate);
+     for (let i = 0; i < datesInRange.length; i++) {
+       listObj.date.push(datesInRange[i]);
+     }
+
+    // push object in list data
+    this.listData.push(listObj);
+
+
     console.log(this.listData);
     this.flag = false;
     this.Event=false;

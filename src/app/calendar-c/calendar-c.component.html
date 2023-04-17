@@ -7,38 +7,49 @@
             <ng-container [ngSwitch]="date.getDate()">
             
                 <li *ngFor="let item of listData">
-                    
-                    <div *ngIf="item.date.getMonth() === date.getMonth()">
+
+                    <div *ngFor="let Dateitem of item.date">
+
+                        <div *ngIf="Dateitem.getMonth() === date.getMonth()">
                    
-                        <ng-container *ngSwitchCase="item.date.getDate()">
-
-                           
-                            <div *ngIf="item.eventType === 'Task'">
-
-                                <button nz-icon nzType="check-circle" (click)="getCTrue()"></button> 
-                                <div *ngIf="click">
-                                    <nz-badge style="background-color:rgb(167, 168, 209);color: white; "   [nzStatus]="item.type" ><s>{{item.data}}</s></nz-badge>
-                                </div>
-
-                                <div *ngIf="!click" >
-                                    <nz-badge style="background-color:rgb(0, 4, 255) ;color: white;"   [nzStatus]="item.type" >{{item.data}}</nz-badge>
+                            <ng-container *ngSwitchCase="Dateitem.getDate()">
+    
+                               
+                                <div *ngIf="item.eventType === 'Task'">
+    
+                                    <button nz-icon nzType="check-circle" (click)="getCTrue(item)"></button> 
+                                    <div *ngIf="item.isCompleted">
+                                        <nz-badge style="background-color:rgb(167, 168, 209);color: white; "   [nzStatus]="item.type" ><s>{{item.data}}</s></nz-badge>
+                                    </div>
+    
+                                    <div *ngIf="!item.isCompleted" >
+                                        <nz-badge style="background-color:rgb(0, 4, 255) ;color: white;"   [nzStatus]="item.type" >{{item.data}}</nz-badge>
+                                    </div>
+                                    
                                 </div>
                                 
-                            </div>
-                            
-                            
-                            <div *ngIf="item.eventType === 'Event'">
-                                <span  style="background-color: green;color: white;">{{item.data}}</span>
-                                <br>
-                                <span style="background-color: rgb(212, 48, 158); color: white;">{{helperFunction(item.startTime?.getHours())}}:{{helperFunction(item.startTime?.getMinutes())}}  ---  {{helperFunction(item.endTime?.getHours())}}:{{helperFunction(item.endTime?.getMinutes())}} o' clock</span>
-                            </div>
+                                
+                                <div *ngIf="item.eventType === 'Event'">
+                                    <span  style="background-color: green;color: white;">{{item.data}}</span>
+                                    <br>
+                                    <span style="background-color: rgb(212, 48, 158); color: white;">{{helperFunction(item.startTime?.getHours())}}:{{helperFunction(item.startTime?.getMinutes())}}  ---  {{helperFunction(item.endTime?.getHours())}}:{{helperFunction(item.endTime?.getMinutes())}} o' clock</span>
+                                </div>
+    
+                                <div *ngIf="item.eventType === 'Event'">
+                                    <button nz-icon nzType="delete" (click)="deleteEvent(item)"></button>
+                                </div>
+                                
+    
+    
+                            </ng-container>
+    
+                        </div>
 
-                            <button nz-icon nzType="delete" (click)="deleteEvent(item)"></button>
 
-
-                        </ng-container>
 
                     </div>
+                    
+                    
 
                 </li>
             
