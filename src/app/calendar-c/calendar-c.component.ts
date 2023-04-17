@@ -23,7 +23,7 @@ export class CalendarCComponent {
   listData : {
     date:Date[],
     data:string,
-    type:string,
+    type?:string,
     eventType:string,
     startTime?:Date,
     endTime?:Date,
